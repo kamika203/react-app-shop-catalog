@@ -1,24 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import Lab2 from "./pages/Lab2";
+import ItemDetail from "./pages/ItemDetail";
+import NavBar from "./components/NavBar";
+import Main from "./pages/Main";
+import Profile from "./pages/Profile";
+import Login from "./pages/Login";
 
 function App() {
+  const [loged, setLogi] = useState(false);
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <BrowserRouter>
+        <NavBar loged={loged}/>
+        <Routes>
+          <Route path="/main" element={<Main />} />
+          <Route path="/profile" 
+         element={loged ? <Profile /> : <Navigate to="/login"  />} />
+          <Route
+            path="/login"
+            element={<Login loged={loged} setL={setLogi} />}
+          />
+          <Route path="/shop" element={<Lab2 />} />
+          <Route path="/item/:id" element={<ItemDetail />} />
+          <Route path="/*" element={<Navigate to="/main" />} />
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 
